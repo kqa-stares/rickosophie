@@ -13,7 +13,7 @@
   "fr": {
    "enabled": true,
    "post_times": ["12:30", "19:30"],
-   "accounts": {"tiktok": "", "instagram": ""},
+   "accounts": {"tiktok": "6af9c23631e084380128302d", "instagram": "6af9c21b55a080d7f3e028a3"},
    "caption_emoji": "🧪",
    "comment_prompt": "Et toi, t'en penses quoi ? Dis-le en commentaire 👇",
    "hashtags": "#rickosophie"
