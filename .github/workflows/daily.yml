@@ -1,0 +1,132 @@
+# Runs every day on GitHub's computers: makes the RickOsophie videos and sends them to Zernio.
+# The owner's PC does not need to be on. Keys come from the repository's Secrets.
+# Heavy (Rick's voice made on the processor: about 50 min a video), so the repository is public (free, unlimited
+# minutes; secrets stay secret). The series clips and Rick's voice model are NOT in this repository: they are
+# downloaded from the private repository rickosophie-assets with the ASSETS_TOKEN secret.
+name: Daily RickOsophie videos
+
+on:
+  schedule:
+    - cron: "07 0 * * *"   # 00:07 UTC: the two videos take about 2 h 30, posts are at 12:30 and 19:30 Paris
+    - cron: "07 4 * * *"   # backup in case GitHub skipped the first one; it skips slots already sent today
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "run = make + send | no-publish = only make the videos | one = only make the first topic (test)"
+        default: one
+        type: choice
+        options: [one, no-publish, run]
+
+permissions:
+  contents: write  # to save state.json (which topics and clips were used)
+
+concurrency:
+  group: daily-videos
+  cancel-in-progress: false
+
+jobs:
+  videos:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 330
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_dispatch' && github.ref_name || 'main' }}
+
+      - uses: astral-sh/setup-uv@v6
+
+      - name: Reuse models and installs from earlier runs
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/huggingface
+            ~/.cache/uv
+            .applio
+            assets/private
+            assets/music/*.mp3
+          key: rick-${{ hashFiles('.github/workflows/daily.yml') }}-${{ github.run_id }}
+          restore-keys: rick-${{ hashFiles('.github/workflows/daily.yml') }}-
+
+      - name: Get the private files (series clips, Rick's voice model)
+        env:
+          GH_TOKEN: ${{ secrets.ASSETS_TOKEN }}
+        run: |
+          if [ ! -f assets/private/clips.json ]; then
+            gh release download v1 --repo ${{ github.repository_owner }}/rickosophie-assets --pattern rickosophie-assets.zip --dir /tmp
+            mkdir -p assets/private && unzip -q /tmp/rickosophie-assets.zip -d assets/private
+          fi
+          ls assets/private assets/private/voice | head -20
+
+      - name: Install FFmpeg and the two Python environments
+        run: |
+          for i in 1 2 3; do
+            sudo apt-get update -q && sudo apt-get install -y -q -o Acquire::Retries=3 ffmpeg && break
+            [ $i = 3 ] && exit 1
+            sleep 30
+          done
+          # 1) voice (OmniVoice), speech recognition (faster-whisper) and picture matching (CLIP)
+          uv venv .venv-voice --python 3.11 -q
+          uv pip install --python .venv-voice -q torch==2.6.0 torchaudio==2.6.0 --index-url https://download.pytorch.org/whl/cpu
+          uv pip install --python .venv-voice -q omnivoice==0.2.1 faster-whisper==1.2.1 transformers==5.22.2 accelerate==1.15.0 \
+            librosa==0.11.0 soundfile==0.14.0 scipy==1.17.1 numpy==2.4.6 pillow==12.3.0 pydub==0.25.1
+          # 2) Rick's timbre (Applio, MIT licence), pinned to the version tested on the owner's PC
+          if [ ! -d .applio/.git ]; then
+            git clone -q https://github.com/IAHispano/Applio.git .applio
+          fi
+          git -C .applio checkout -q 6d5d9511b7e719b1f613362bc767e841ad72fa72
+          uv venv .venv-applio --python 3.12 -q
+          uv pip install --python .venv-applio -q torch==2.11.0 torchaudio==2.11.0 --index-url https://download.pytorch.org/whl/cpu
+          grep -v -E "^torch|win32" .applio/requirements-engine.txt > /tmp/applio-req.txt
+          uv pip install --python .venv-applio -q -r /tmp/applio-req.txt
+          (cd .applio && ../.venv-applio/bin/python core.py prerequisites --no-pretraineds-hifigan --models --no-exe > /dev/null)
+          echo "PY_VOICE=$PWD/.venv-voice/bin/python" >> $GITHUB_ENV
+          echo "PY_APPLIO=$PWD/.venv-applio/bin/python" >> $GITHUB_ENV
+          echo "APPLIO=$PWD/.applio" >> $GITHUB_ENV
+
+      - name: Make and send the videos
+        env:
+          ZERNIO_API_KEY: ${{ secrets.ZERNIO_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          MODE: ${{ github.event.inputs.mode || 'run' }}
+        run: |
+          case "$MODE" in
+            run) python3 src/run_daily.py ;;
+            no-publish) python3 src/run_daily.py --no-publish ;;
+            *) python3 src/make_video.py ;;
+          esac
+
+      - name: Telegram alert if the job failed
+        if: failure() && hashFiles('telegram-alert-sent') == ''
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          [ -n "$TELEGRAM_BOT_TOKEN" ] && [ -n "$TELEGRAM_CHAT_ID" ] || exit 0
+          curl -s -o /dev/null "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
+            --data-urlencode "chat_id=$TELEGRAM_CHAT_ID" \
+            --data-urlencode "text=$(printf '🧪 RICKOSOPHIE\n❌ Le job vidéo GitHub a échoué. Détails : %s' "$RUN_URL")"
+
+      - name: Keep the videos for 3 days (Actions page > this run > Artifacts)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: videos
+          path: |
+            output/*/video.mp4
+            output/*/check/sheet.jpg
+            run-log.txt
+          retention-days: 3
+          if-no-files-found: ignore
+
+      - name: Save which topics and clips were used
+        if: always() && (github.event.inputs.mode || 'run') == 'run'
+        run: |
+          git config user.name "rickosophie-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add state.json posts_log.jsonl 2>/dev/null || git add state.json
+          git diff --cached --quiet && exit 0
+          git commit -m "Used topics $(date -u +%F)"
+          for i in 1 2 3; do git pull --rebase -q origin main && git push -q && exit 0; sleep 5; done
+          exit 1

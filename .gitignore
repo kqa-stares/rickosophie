@@ -1,0 +1,11 @@
+.env
+.venv*/
+.applio/
+output/
+tests/
+scripts/
+run-log.txt
+__pycache__/
+telegram-alert-sent
+assets/private/
+assets/music/*.mp3

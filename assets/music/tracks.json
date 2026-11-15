@@ -1,0 +1,9 @@
+{"_help": "The six tracks the owner chose on 14 Nov 2026 (Pixabay, no Content ID, not AI-made). Downloaded at run time by src/make_video.py; each topic always gets the same one (by its id).",
+ "tracks": [
+  {"id": "179560", "name": "it only rains when you're gone (Samuel Kamau)", "url": "https://cdn.pixabay.com/audio/2023/12/03/audio_39cfee2cd7.mp3"},
+  {"id": "564746", "name": "Dark Hip-Hop (BFCMUSIC)", "url": "https://cdn.pixabay.com/audio/2026/07/09/audio_4f4e471020.mp3"},
+  {"id": "557452", "name": "Midnight Shadows (Dhiresh Debbarma)", "url": "https://cdn.pixabay.com/audio/2026/07/01/audio_63bff1e7aa.mp3"},
+  {"id": "173058", "name": "Dark Cinematic Ambient Beat (Rockot)", "url": "https://cdn.pixabay.com/audio/2023/10/24/audio_d9b473a7fc.mp3"},
+  {"id": "262295", "name": "Dagger, dark piano trap beat (Amsley Beats)", "url": "https://cdn.pixabay.com/audio/2024/11/15/audio_da26cc4688.mp3"},
+  {"id": "460525", "name": "My loud scream black heart in a minor key (Mykola Osennykh)", "url": "https://cdn.pixabay.com/audio/2026/01/03/audio_a56642e377.mp3"}
+ ]}

@@ -1,0 +1,22 @@
+{
+ "_help": "publish_mode: 'draft' = nothing goes public (TikTok inbox / Zernio drafts), 'schedule' = real posts. accounts: Zernio account ids of the channel's TikTok and Instagram (Zernio dashboard).",
+ "publish_mode": "draft",
+ "timezone": "Europe/Paris",
+ "platforms": ["tiktok", "instagram"],
+ "min_seconds": 55,
+ "post_time_jitter_minutes": 35,
+ "telegram_chat_id": "",
+ "tiktok_ai_label_field": "videoMadeWithAi",
+ "telegram_emoji": "🧪",
+ "channel_name": "RickOsophie",
+ "languages": {
+  "fr": {
+   "enabled": true,
+   "post_times": ["12:30", "19:30"],
+   "accounts": {"tiktok": "", "instagram": ""},
+   "caption_emoji": "🧪",
+   "comment_prompt": "Et toi, t'en penses quoi ? Dis-le en commentaire 👇",
+   "hashtags": "#rickosophie"
+  }
+ }
+}
