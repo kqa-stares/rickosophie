@@ -7,8 +7,8 @@ name: Daily RickOsophie videos
 
 on:
   schedule:
-    - cron: "07 0 * * *"   # 00:07 UTC: the two videos take about 2 h 30, posts are at 12:30 and 19:30 Paris
-    - cron: "07 4 * * *"   # backup in case GitHub skipped the first one; it skips slots already sent today
+    - cron: "07 0 * * *"   # 00:07 UTC: the two videos take about 1 h 15, posts are at 08:00 and 20:00 Paris (±35 min)
+    - cron: "37 3 * * *"   # backup in case GitHub skipped the first one (done before 07:00 Paris); skips slots already sent
   workflow_dispatch:
     inputs:
       mode:

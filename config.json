@@ -1,6 +1,6 @@
 {
  "_help": "publish_mode: 'draft' = nothing goes public (TikTok inbox / Zernio drafts), 'schedule' = real posts. accounts: Zernio account ids of the channel's TikTok and Instagram (Zernio dashboard).",
- "publish_mode": "draft",
+ "publish_mode": "schedule",
  "timezone": "Europe/Paris",
  "platforms": ["tiktok", "instagram"],
  "min_seconds": 55,
@@ -12,7 +12,7 @@
  "languages": {
   "fr": {
    "enabled": true,
-   "post_times": ["12:30", "19:30"],
+   "post_times": ["08:00", "20:00"],
    "accounts": {"tiktok": "6af9c23631e084380128302d", "instagram": "6af9c21b55a080d7f3e028a3"},
    "caption_emoji": "🧪",
    "comment_prompt": "Et toi, t'en penses quoi ? Dis-le en commentaire 👇",
