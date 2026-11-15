@@ -53,7 +53,9 @@ jobs:
         run: |
           if [ ! -f assets/private/clips.json ]; then
             gh release download v1 --repo ${{ github.repository_owner }}/rickosophie-assets --pattern rickosophie-assets.zip --dir /tmp
-            mkdir -p assets/private && unzip -q /tmp/rickosophie-assets.zip -d assets/private
+            mkdir -p assets/private
+            # made on Windows: unzip warns about backslashes (exit code 1) but turns them into folders correctly
+            unzip -q /tmp/rickosophie-assets.zip -d assets/private || [ $? -eq 1 ]
           fi
           ls assets/private assets/private/voice | head -20
 
