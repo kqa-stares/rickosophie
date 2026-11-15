@@ -15,7 +15,7 @@ on:
         description: "run = make + send | no-publish = only make the videos | one = only make the first topic (test)"
         default: one
         type: choice
-        options: [one, no-publish, run]
+        options: [one, no-publish, run, accounts]
 
 permissions:
   contents: write  # to save state.json (which topics and clips were used)
@@ -47,7 +47,17 @@ jobs:
           key: rick-${{ hashFiles('.github/workflows/daily.yml') }}-${{ github.run_id }}
           restore-keys: rick-${{ hashFiles('.github/workflows/daily.yml') }}-
 
-      - name: Get the private files (series clips, Rick's voice model)
+      - name: List the Zernio accounts (mode accounts only)
+        if: github.event.inputs.mode == 'accounts'
+        env:
+          ZERNIO_API_KEY: ${{ secrets.ZERNIO_API_KEY }}
+        run: |
+          python3 -c "import sys; sys.path.insert(0, 'src'); import publish; publish.list_accounts()"
+          python3 -c "import sys; sys.path.insert(0, 'src'); import notify; notify.send('✅ Test des alertes RickOsophie : Telegram fonctionne.')"
+          exit 0
+
+      - name: Get the private files
+        if: github.event.inputs.mode != 'accounts' (series clips, Rick's voice model)
         env:
           GH_TOKEN: ${{ secrets.ASSETS_TOKEN }}
         run: |
@@ -60,6 +70,7 @@ jobs:
           ls assets/private assets/private/voice | head -20
 
       - name: Install FFmpeg and the two Python environments
+        if: github.event.inputs.mode != 'accounts'
         run: |
           for i in 1 2 3; do
             sudo apt-get update -q && sudo apt-get install -y -q -o Acquire::Retries=3 ffmpeg && break
@@ -86,6 +97,7 @@ jobs:
           echo "APPLIO=$PWD/.applio" >> $GITHUB_ENV
 
       - name: Make and send the videos
+        if: github.event.inputs.mode != 'accounts'
         env:
           ZERNIO_API_KEY: ${{ secrets.ZERNIO_API_KEY }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
