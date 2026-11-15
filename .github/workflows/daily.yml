@@ -78,7 +78,7 @@ jobs:
           git -C .applio checkout -q 6d5d9511b7e719b1f613362bc767e841ad72fa72
           uv venv .venv-applio --python 3.12 -q
           uv pip install --python .venv-applio -q torch==2.11.0 torchaudio==2.11.0 --index-url https://download.pytorch.org/whl/cpu
-          grep -v -E "^torch|win32" .applio/requirements-engine.txt > /tmp/applio-req.txt
+          grep -v -E '^torch|== "win32"' .applio/requirements-engine.txt > /tmp/applio-req.txt   # keeps onnxruntime (Linux)
           uv pip install --python .venv-applio -q -r /tmp/applio-req.txt
           (cd .applio && ../.venv-applio/bin/python core.py prerequisites --no-pretraineds-hifigan --models --no-exe > /dev/null)
           echo "PY_VOICE=$PWD/.venv-voice/bin/python" >> $GITHUB_ENV
