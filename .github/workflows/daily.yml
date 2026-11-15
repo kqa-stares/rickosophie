@@ -53,6 +53,15 @@ jobs:
           ZERNIO_API_KEY: ${{ secrets.ZERNIO_API_KEY }}
         run: |
           python3 -c "import sys; sys.path.insert(0, 'src'); import publish; publish.list_accounts()"
+          python3 - <<'PY'
+          import json, sys
+          sys.path.insert(0, 'src')
+          import publish
+          _, data = publish.api('GET', '/accounts')
+          for a in data.get('accounts', data if isinstance(data, list) else []):
+              keep = {k: v for k, v in a.items() if not any(w in k.lower() for w in ('token', 'secret', 'key', 'cookie'))}
+              print(json.dumps(keep, ensure_ascii=False)[:1500])
+          PY
           python3 -c "import sys; sys.path.insert(0, 'src'); import notify; notify.send('✅ Test des alertes RickOsophie : Telegram fonctionne.')"
           exit 0
 
