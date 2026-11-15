@@ -56,8 +56,8 @@ jobs:
           python3 -c "import sys; sys.path.insert(0, 'src'); import notify; notify.send('✅ Test des alertes RickOsophie : Telegram fonctionne.')"
           exit 0
 
-      - name: Get the private files
-        if: github.event.inputs.mode != 'accounts' (series clips, Rick's voice model)
+      - name: Get the private files (series clips, Rick's voice model)
+        if: github.event.inputs.mode != 'accounts'
         env:
           GH_TOKEN: ${{ secrets.ASSETS_TOKEN }}
         run: |
