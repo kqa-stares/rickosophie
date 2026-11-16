@@ -3,7 +3,7 @@
   python3 src/add_content.py content/batch02.json
 
 A content file is a JSON list of topics:
-{"id": "lundi-matin",                                  lowercase words with dashes, never used before
+{"id": "le-lundi-matin",                               the id of its topic_plan.json entry, never used before
  "title": {"fr": "Le lundi matin"},                     short, for Telegram messages
  "lines": {"fr": ["bloc 1", ..., "bloc 6"]},            EXACTLY 6 blocks, each 30 to 50 words, 225 to 255 words in all
  "images": ["English descriptions | of pictures | for block 1", ... 6 lines],
@@ -79,10 +79,14 @@ def main(path):
     known_ids = {t["id"] for t in topics}
     known_lines = {s.strip().lower() for t in topics for l in t["lines"]["fr"] for s in re.split(r"(?<=[.?!])\s+", l)
                    if len(words(s)) >= 6}
+    plan_file = ROOT / "topic_plan.json"
+    plan_ids = {p["id"] for p in json.loads(plan_file.read_text(encoding="utf-8"))} if plan_file.exists() else None
     new = json.loads(Path(path).read_text(encoding="utf-8"))
     bad = 0
     for t in new:
         p = problems(t, known_ids, known_lines)
+        if plan_ids is not None and t.get("id") not in plan_ids:
+            p.append("id not in topic_plan.json (use the plan entry's id)")
         if p:
             bad += 1
             print(f"REFUSED {t.get('id')}: " + "; ".join(p))
