@@ -68,6 +68,9 @@ def main(folder, images_file, script_file):
     state_file = ROOT / "state.json"
     state = json.loads(state_file.read_text(encoding="utf-8")) if state_file.exists() else {}
     recent = set(state.get("recent_clips", []))
+    # clips showing opening credits (names on screen): never used
+    banned = set(json.loads((ROOT / "assets" / "banned_clips.json").read_text(encoding="utf-8")))
+    clips = [c if c["file"] not in banned else dict(c, dur=0) for c in clips]
 
     model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32").eval()
     proc = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
