@@ -1,12 +1,16 @@
 {
   "fr": [
     "telephone",
-    "amour"
+    "amour",
+    "travail",
+    "normalite"
   ],
   "slots": {
     "fr": {
       "2026-11-16 08:00": "telephone",
-      "2026-11-16 20:00": "amour"
+      "2026-11-16 20:00": "amour",
+      "2026-11-17 08:00": "travail",
+      "2026-11-17 20:00": "normalite"
     }
   },
   "posts": [
@@ -15,14 +19,30 @@
       "lang": "fr",
       "topic": "telephone",
       "title": "T'es pas le client de ton téléphone",
-      "when": "2026-11-16T08:29:00"
+      "when": "2026-11-16T08:29:00",
+      "checked": true
     },
     {
       "id": "6afa6bbef60cbe9c42c389c0",
       "lang": "fr",
       "topic": "amour",
       "title": "L'amour, c'est de la chimie",
-      "when": "2026-11-16T20:24:00"
+      "when": "2026-11-16T20:24:00",
+      "checked": true
+    },
+    {
+      "id": "6afbacb863f99e20a41c725c",
+      "lang": "fr",
+      "topic": "travail",
+      "title": "Le travail, c'est vendre ta vie",
+      "when": "2026-11-17T07:35:00"
+    },
+    {
+      "id": "6afbb1ca83c31da5fcaee344",
+      "lang": "fr",
+      "topic": "normalite",
+      "title": "Être normal, la plus grande arnaque",
+      "when": "2026-11-17T19:37:00"
     }
   ],
   "recent_clips": [
@@ -123,7 +143,47 @@
     "0246.mp4",
     "0010.mp4",
     "0142.mp4",
-    "0279.mp4"
+    "0279.mp4",
+    "0300.mp4",
+    "0020.mp4",
+    "0034.mp4",
+    "0146.mp4",
+    "0045.mp4",
+    "0022.mp4",
+    "0013.mp4",
+    "0298.mp4",
+    "0199.mp4",
+    "0292.mp4",
+    "0169.mp4",
+    "0002.mp4",
+    "0011.mp4",
+    "0154.mp4",
+    "0174.mp4",
+    "0156.mp4",
+    "0247.mp4",
+    "0332.mp4",
+    "0085.mp4",
+    "0316.mp4",
+    "0021.mp4",
+    "0176.mp4",
+    "0232.mp4",
+    "0195.mp4",
+    "0235.mp4",
+    "0182.mp4",
+    "0139.mp4",
+    "0211.mp4",
+    "0297.mp4",
+    "0231.mp4",
+    "0015.mp4",
+    "0000.mp4",
+    "0131.mp4",
+    "0092.mp4",
+    "0276.mp4",
+    "0060.mp4",
+    "0212.mp4",
+    "0138.mp4",
+    "0293.mp4",
+    "0198.mp4"
   ],
   "reminders": [
     "topics:fr:9:10"
