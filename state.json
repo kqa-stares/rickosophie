@@ -3,14 +3,18 @@
     "telephone",
     "amour",
     "travail",
-    "normalite"
+    "normalite",
+    "gourous",
+    "bonheur"
   ],
   "slots": {
     "fr": {
       "2026-11-16 08:00": "telephone",
       "2026-11-16 20:00": "amour",
       "2026-11-17 08:00": "travail",
-      "2026-11-17 20:00": "normalite"
+      "2026-11-17 20:00": "normalite",
+      "2026-11-18 08:00": "gourous",
+      "2026-11-18 20:00": "bonheur"
     }
   },
   "posts": [
@@ -35,14 +39,30 @@
       "lang": "fr",
       "topic": "travail",
       "title": "Le travail, c'est vendre ta vie",
-      "when": "2026-11-17T07:35:00"
+      "when": "2026-11-17T07:35:00",
+      "checked": true
     },
     {
       "id": "6afbb1ca83c31da5fcaee344",
       "lang": "fr",
       "topic": "normalite",
       "title": "Être normal, la plus grande arnaque",
-      "when": "2026-11-17T19:37:00"
+      "when": "2026-11-17T19:37:00",
+      "checked": true
+    },
+    {
+      "id": "6afd07a656c5e60086316212",
+      "lang": "fr",
+      "topic": "gourous",
+      "title": "Les gourous de la réussite",
+      "when": "2026-11-18T07:37:00"
+    },
+    {
+      "id": "6afd0c9b488a873c63c5d168",
+      "lang": "fr",
+      "topic": "bonheur",
+      "title": "Le bonheur n'existe pas",
+      "when": "2026-11-18T20:17:00"
     }
   ],
   "recent_clips": [
@@ -183,7 +203,49 @@
     "0212.mp4",
     "0138.mp4",
     "0293.mp4",
-    "0198.mp4"
+    "0198.mp4",
+    "0038.mp4",
+    "0225.mp4",
+    "0213.mp4",
+    "0283.mp4",
+    "0029.mp4",
+    "0287.mp4",
+    "0314.mp4",
+    "0326.mp4",
+    "0137.mp4",
+    "0340.mp4",
+    "0333.mp4",
+    "0250.mp4",
+    "0068.mp4",
+    "0075.mp4",
+    "0050.mp4",
+    "0123.mp4",
+    "0057.mp4",
+    "0044.mp4",
+    "0122.mp4",
+    "0331.mp4",
+    "0281.mp4",
+    "0255.mp4",
+    "0275.mp4",
+    "0113.mp4",
+    "0299.mp4",
+    "0158.mp4",
+    "0096.mp4",
+    "0218.mp4",
+    "0197.mp4",
+    "0157.mp4",
+    "0315.mp4",
+    "0171.mp4",
+    "0274.mp4",
+    "0023.mp4",
+    "0061.mp4",
+    "0288.mp4",
+    "0004.mp4",
+    "0321.mp4",
+    "0124.mp4",
+    "0277.mp4",
+    "0307.mp4",
+    "0077.mp4"
   ],
   "reminders": [
     "topics:fr:9:10"
