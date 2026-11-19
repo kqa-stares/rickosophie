@@ -55,14 +55,16 @@
       "lang": "fr",
       "topic": "gourous",
       "title": "Les gourous de la réussite",
-      "when": "2026-11-18T07:37:00"
+      "when": "2026-11-18T07:37:00",
+      "checked": true
     },
     {
       "id": "6afd0c9b488a873c63c5d168",
       "lang": "fr",
       "topic": "bonheur",
       "title": "Le bonheur n'existe pas",
-      "when": "2026-11-18T20:17:00"
+      "when": "2026-11-18T20:17:00",
+      "checked": true
     }
   ],
   "recent_clips": [
