@@ -80,28 +80,48 @@ def main(folder, images_file, script_file):
         T = (out if torch.is_tensor(out) else out.pooler_output).numpy()
     T = T / np.linalg.norm(T, axis=1, keepdims=True)
 
-    used, shots, count = [], [], {}
-    for i, t in enumerate(times):
+    used, shots, count, ranges = [], [], {}, {}
+    times = list(times)
+
+    def find(need, hint, avoid_recent):
+        score = V @ T[flat.index(hint)]
+        for k in np.argsort(-score):
+            c = clips[k]
+            if c["file"] in used or c["dur"] < need + 0.15:
+                continue
+            if avoid_recent and c["file"] in recent and len(recent) < len(clips) - 40:
+                continue
+            if c["file"] not in ranges:
+                ranges[c["file"]] = stable_range(PRIVATE / "clips" / c["file"], 0.04, c["dur"] - 0.04, c["dur"] / 2,
+                                                 limit=0.045)
+            a, b = ranges[c["file"]]
+            if b - a >= need + 0.05:
+                return c, a, b, score[k]
+        return None
+
+    # a picture needs a clip at least as long as itself: first among clips not used lately, then among all of them,
+    # and if none is long enough the picture is cut in two shorter ones (long clips run out first)
+    i = 0
+    while i < len(times):
+        t = times[i]
         end = times[i + 1] if i + 1 < len(times) else total + TAIL
         need = end - t + (LEAD if i == 0 else 0)
         u = max(k for k, s in enumerate(starts) if s <= t + 0.05)
         hint = hints[u][count.get(u, 0) % len(hints[u])]
         count[u] = count.get(u, 0) + 1
-        score = V @ T[flat.index(hint)]
-        for k in np.argsort(-score):
-            c = clips[k]
-            if c["file"] in used or (c["file"] in recent and len(recent) < len(clips) - 40) or c["dur"] < need + 0.15:
-                continue
-            a, b = stable_range(PRIVATE / "clips" / c["file"], 0.04, c["dur"] - 0.04, c["dur"] / 2, limit=0.045)
-            if b - a < need + 0.05:
-                continue
-            used.append(c["file"])
-            src = min(max(a, c["dur"] / 2 - need / 2), b - need - 0.02)
-            shots.append({"t": t, "file": c["file"], "start": round(max(0.0, src), 2), "cx": c["cx"],
-                          "why": f"{hint} ({score[k]:.2f})"})
-            break
-        else:
-            sys.exit(f"no clip long enough for the picture at {t:.1f} s ({need:.1f} s, '{hint}')")
+        found = find(need, hint, True) or find(need, hint, False)
+        if not found:
+            if end - t < 1.6:
+                sys.exit(f"no clip long enough for the picture at {t:.1f} s ({need:.1f} s, '{hint}')")
+            times.insert(i + 1, round(t + (end - t) / 2, 2))
+            print(f"picture at {t:.1f} s cut in two ({need:.1f} s, no clip long enough)")
+            continue
+        c, a, b, sc = found
+        used.append(c["file"])
+        src = min(max(a, c["dur"] / 2 - need / 2), b - need - 0.02)
+        shots.append({"t": t, "file": c["file"], "start": round(max(0.0, src), 2), "cx": c["cx"],
+                      "why": f"{hint} ({sc:.2f})"})
+        i += 1
     (folder / "picked.json").write_text(json.dumps(used), encoding="utf-8")
     edit = json.loads((folder / "edit.json").read_text(encoding="utf-8")) if (folder / "edit.json").exists() else {}
     edit["shots"] = shots
