@@ -13,7 +13,10 @@
     "argent",
     "influenceurs",
     "administration",
-    "pouvoir"
+    "pouvoir",
+    "tradition",
+    "merite",
+    "sommeil"
   ],
   "slots": {
     "fr": {
@@ -30,7 +33,9 @@
       "2026-11-21 08:00": "argent",
       "2026-11-21 20:00": "influenceurs",
       "2026-11-22 08:00": "administration",
-      "2026-11-22 20:00": "pouvoir"
+      "2026-11-22 20:00": "pouvoir",
+      "2026-11-23 08:00": "tradition",
+      "2026-11-23 20:00": "sommeil"
     }
   },
   "posts": [
@@ -135,58 +140,33 @@
       "lang": "fr",
       "topic": "administration",
       "title": "L'administration, le labyrinthe en papier",
-      "when": "2026-11-22T08:34:00"
+      "when": "2026-11-22T08:34:00",
+      "checked": true
     },
     {
       "id": "6b024ddfd236bc251b806c45",
       "lang": "fr",
       "topic": "pouvoir",
       "title": "Ceux qui veulent le pouvoir",
-      "when": "2026-11-22T20:25:00"
+      "when": "2026-11-22T20:25:00",
+      "checked": true
+    },
+    {
+      "id": "6b0399c8faa9231e9dcd7cc0",
+      "lang": "fr",
+      "topic": "tradition",
+      "title": "La tradition, une habitude qui a vieilli",
+      "when": "2026-11-23T07:36:00"
+    },
+    {
+      "id": "6b03a39e703e32689fab09a7",
+      "lang": "fr",
+      "topic": "sommeil",
+      "title": "Le sommeil, ta seule vraie pause",
+      "when": "2026-11-23T20:10:00"
     }
   ],
   "recent_clips": [
-    "0068.mp4",
-    "0075.mp4",
-    "0050.mp4",
-    "0123.mp4",
-    "0057.mp4",
-    "0044.mp4",
-    "0122.mp4",
-    "0331.mp4",
-    "0281.mp4",
-    "0255.mp4",
-    "0275.mp4",
-    "0113.mp4",
-    "0299.mp4",
-    "0158.mp4",
-    "0096.mp4",
-    "0218.mp4",
-    "0197.mp4",
-    "0157.mp4",
-    "0315.mp4",
-    "0171.mp4",
-    "0274.mp4",
-    "0023.mp4",
-    "0061.mp4",
-    "0288.mp4",
-    "0004.mp4",
-    "0321.mp4",
-    "0124.mp4",
-    "0277.mp4",
-    "0307.mp4",
-    "0077.mp4",
-    "0219.mp4",
-    "0180.mp4",
-    "0254.mp4",
-    "0305.mp4",
-    "0080.mp4",
-    "0112.mp4",
-    "0209.mp4",
-    "0260.mp4",
-    "0161.mp4",
-    "0241.mp4",
-    "0086.mp4",
     "0079.mp4",
     "0290.mp4",
     "0036.mp4",
@@ -345,9 +325,53 @@
     "0176.mp4",
     "0297.mp4",
     "0174.mp4",
-    "0001.mp4"
+    "0001.mp4",
+    "0038.mp4",
+    "0287.mp4",
+    "0138.mp4",
+    "0250.mp4",
+    "0283.mp4",
+    "0092.mp4",
+    "0011.mp4",
+    "0314.mp4",
+    "0276.mp4",
+    "0212.mp4",
+    "0198.mp4",
+    "0002.mp4",
+    "0225.mp4",
+    "0015.mp4",
+    "0137.mp4",
+    "0000.mp4",
+    "0326.mp4",
+    "0029.mp4",
+    "0340.mp4",
+    "0201.mp4",
+    "0123.mp4",
+    "0060.mp4",
+    "0131.mp4",
+    "0068.mp4",
+    "0044.mp4",
+    "0315.mp4",
+    "0213.mp4",
+    "0157.mp4",
+    "0331.mp4",
+    "0218.mp4",
+    "0096.mp4",
+    "0281.mp4",
+    "0050.mp4",
+    "0057.mp4",
+    "0113.mp4",
+    "0122.mp4",
+    "0293.mp4",
+    "0075.mp4",
+    "0255.mp4",
+    "0197.mp4",
+    "0333.mp4"
   ],
   "reminders": [
     "topics:fr:9:10"
+  ],
+  "skipped": [
+    "merite"
   ]
 }
